@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 // Inicializarlo
 const app = express();
@@ -9,6 +10,7 @@ app.set('port', process.env.PORT || 3000);
 // Middleware
 app.use(express.urlencoded({extended: false})); // Por si los datos del body viene en cierto formato
 app.use(express.json()); // Por si hay muchos tipos de formatos en el JSON
+app.use(cors());
 
 // Base de datos
 require('./config/conexiones');
