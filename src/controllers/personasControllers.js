@@ -44,7 +44,7 @@ function obtenerPersonal(req, res) {
                 if(personal === undefined || personal.length == 0)
                     mensaje = "Persona no encontrada";
 
-                res.json({data: personal, mensaje});
+                res.json({data: personal[0], mensaje});
 
             }
 
@@ -67,15 +67,28 @@ function agregarPersonal(req, res) {
 
         }
 
+        if(personal.Nombre.length > 50) {
+
+            return res.status(400).send({error: true, mensaje: "El nombre debe contener a lo mucho 50 caracteres"});            
+
+
+        }
+
+        if(personal.Apellido.length > 80) {
+
+            return res.status(400).send({error: true, mensaje: "El Apellido debe contener a lo mucho 80 caracteres"});            
+
+        }
+
         if(personal.Telefono && personal.Telefono.length !== 10) {
 
             return res.status(400).send({error: true, mensaje: "La longitud debe ser de 10 caracteres"});            
 
         }
 
-        let query = `INSERT INTO Personal(Nombre, Apellido, Telefono, Direccion) VALUES(${personal.Nombre}, ${personal.Apellido}, ${personal.Telefono}, ${personal.Direccion});`;
+        let query = "INSERT INTO Personal set ?";
 
-        connection.query(query, (err, data) => {
+        connection.query(query, [personal], (err, data) => {
 
             if(err) {
 
@@ -97,12 +110,31 @@ function editarPersonal(req, res) {
 
     if(connection) {
 
-        const id = req.params.id;
+        const {id} = req.params;
         const personal = req.body;
+
+        if(personal.Nombre.length > 50) {
+
+            return res.status(400).send({error: true, mensaje: "El nombre debe contener a lo mucho 50 caracteres"});            
+
+
+        }
+
+        if(personal.Apellido.length > 80) {
+
+            return res.status(400).send({error: true, mensaje: "El Apellido debe contener a lo mucho 80 caracteres"});            
+
+        }
+
+        if(personal.Telefono && personal.Telefono.length !== 10) {
+
+            return res.status(400).send({error: true, mensaje: "La longitud debe ser de 10 caracteres"});            
+
+        }
 
         let query = "UPDATE Personal set ? WHERE ID = ?";
 
-        connection.query(query, [personal, id], (error, data) => {
+        connection.query(query, [personal, id], (err, data) => {
 
             if(err) {
 
@@ -116,6 +148,8 @@ function editarPersonal(req, res) {
 
                     mensaje = "La informacion es la misma";
 
+                } else {
+                    mensaje = "Persona actualizada con exito"
                 }
 
                 res.json({error: false, data, mensaje});
@@ -157,7 +191,7 @@ function eliminarPersonal(req, res) {
 
                 }
 
-                res.json({error: false, data});
+                res.json({error: false, data, mensaje});
 
             }
 

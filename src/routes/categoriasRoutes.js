@@ -10,6 +10,6 @@ routes.get('/categorias/:id', categoriasControllers.obtenerCategoria);
 
 routes.post('/categorias', categoriasControllers.agregarCategoria);
 
-routes.delete('/:id', categoriasControllers.eliminarCategoria);
+routes.delete('/categorias/:id', categoriasControllers.eliminarCategoria);
 
 module.exports = routes;

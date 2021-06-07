@@ -18,6 +18,7 @@ require('./config/conexiones');
 // Rutas
 app.use(require('./routes/categoriasRoutes'));
 app.use(require('./routes/personasRoutes'));
+app.use(require('./routes/ticketsRoutes'));
 
 // Levantar el servidor
 app.listen(app.get('port'), (error) => {

@@ -61,9 +61,15 @@ function agregarCategoria(req, res) {
         console.log(req.body);
         const categoria = req.body;
 
-        if(!categoria.nombre) {
+        if(!categoria.Nombre) {
 
             return res.status(400).send({error: true, mensaje: "El nombre es obligatorio"});            
+
+        }
+
+        if(categoria.Nombre.length > 50) {
+
+            return res.status(400).send({error: true, mensaje: "El nombre debe contener a lo mucho 50 caracteres"});            
 
         }
 
@@ -116,7 +122,7 @@ function eliminarCategoria(req, res) {
 
                 }
 
-                res.json({error: false, data});
+                res.json({error: false, data, mensaje});
 
             }
 
